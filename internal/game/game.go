@@ -1,42 +1,34 @@
 package game
 
 import (
-	"bytes"
 	"fmt"
 	"image"
 	_ "image/png"
-	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
-	"github.com/hajimehoshi/ebiten/v2/examples/resources/images"
 )
 
 const (
 	screenWidth  = 640
 	screenHeight = 480
-	frameOX      = 510
-	frameOY      = 640
-	frameWidth   = 65
-	frameHeight  = 65
-	frameCount   = 8
-)
-
-var (
-	elementImage *ebiten.Image
+	frameOX      = 0
+	frameOY      = 0
+	frameWidth   = 300
+	frameHeight  = 300
+	frameCount   = 1
 )
 
 type Game struct {
 	count  int
 	mouseX int
 	mouseY int
+	Assets map[string]*ebiten.Image // Store images as a map in the Game struct
 }
 
 func NewGame() *Game {
 	return &Game{
-		count:  0,
-		mouseX: 0,
-		mouseY: 0,
+		Assets: make(map[string]*ebiten.Image), // Initialize the assets map
 	}
 }
 
@@ -61,7 +53,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	//op.GeoM.Scale(0.5, 0.5)                                 // Scale down
 
 	// Step 3: Render the image
-	screen.DrawImage(elementImage.SubImage(image.Rect(sx, sy, sx+frameWidth, sy+frameHeight)).(*ebiten.Image), op)
+	screen.DrawImage(g.Assets["firering_png"].SubImage(image.Rect(sx, sy, sx+frameWidth, sy+frameHeight)).(*ebiten.Image), op)
 	//ebitenutil.DebugPrint(screen, fmt.Sprintf("frame sx: %d, sy: %d", sx, sy))
 
 	ebitenutil.DebugPrintAt(screen, fmt.Sprintf("Mouse: %d, %d", g.mouseX, g.mouseY), 25, 25)
@@ -69,14 +61,6 @@ func (g *Game) Draw(screen *ebiten.Image) {
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
-
-	// Decode an image from the image file's byte slice.
-	//TODO: switch this to something embedded in our own source code
-	img, _, err := image.Decode(bytes.NewReader(images.Spritesheet_png))
-	if err != nil {
-		log.Fatal(err)
-	}
-	elementImage = ebiten.NewImageFromImage(img)
 
 	return screenWidth, screenHeight
 }

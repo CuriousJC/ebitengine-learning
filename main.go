@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/curiousjc/ebitengine-learning/assets"
 	"github.com/curiousjc/ebitengine-learning/internal/game"
 	"github.com/hajimehoshi/ebiten/v2"
 	"log"
@@ -16,6 +17,7 @@ func main() {
 	ebiten.SetWindowTitle("Ebitengine Learning")
 
 	g := game.NewGame()
+	g.Assets = assets.LoadAssets()
 
 	if err := ebiten.RunGame(g); err != nil {
 		log.Fatal(err)
