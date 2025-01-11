@@ -37,8 +37,18 @@ func (g *Game) Update() error {
 
 func (g *Game) Draw(screen *ebiten.Image) {
 
+	screen.Fill(color.RGBA{
+		R: 50,
+		G: 50,
+		B: 50,
+		A: 255,
+	})
+
 	DrawMouseCursorImage(g.GlobalState, screen)
 	DrawHealthBar(g.GlobalState, screen)
+	DrawRoundedHealthBar(g.GlobalState, screen)
+	DrawMaskColorized(g.GlobalState, screen)
+	DrawBorderedBox(g.GlobalState, screen)
 
 	// Debug Info will front-run everything and is drawn last on the screen
 	if g.GlobalState.ActiveDebug {
