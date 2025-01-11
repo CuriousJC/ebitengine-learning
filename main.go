@@ -8,16 +8,21 @@ import (
 )
 
 const (
-	screenWidth  = 320
-	screenHeight = 240
+	screenWidth  = 1280
+	screenHeight = 960
 )
 
 func main() {
-	ebiten.SetWindowSize(screenWidth*2, screenHeight*2)
+	ebiten.SetWindowSize(screenWidth, screenHeight)
 	ebiten.SetWindowTitle("Ebitengine Learning")
 
+	//Create our Game instance
 	g := game.NewGame()
-	g.Assets = assets.LoadAssets()
+	g.GlobalState.ActiveDebug = true
+
+	//Load assets into memory one time at startup
+	g.GlobalState.Assets = assets.LoadAssets()
+	g.GlobalState.Fonts = assets.LoadFonts()
 
 	if err := ebiten.RunGame(g); err != nil {
 		log.Fatal(err)
